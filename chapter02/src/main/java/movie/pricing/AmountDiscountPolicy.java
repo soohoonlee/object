@@ -2,10 +2,10 @@ package movie.pricing;
 
 import money.Money;
 import movie.DiscountCondition;
-import movie.DiscountPolicy;
+import movie.DefaultDiscountPolicy;
 import movie.Screening;
 
-public class AmountDiscountPolicy extends DiscountPolicy {
+public class AmountDiscountPolicy extends DefaultDiscountPolicy {
 	private final Money discountAmount;
 
 	public AmountDiscountPolicy(Money discountAmount, DiscountCondition... conditions) {
