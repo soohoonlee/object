@@ -1,6 +1,6 @@
 package movie;
 
-public class SequenceCondition {
+public class SequenceCondition implements DiscountCondition {
 	private int sequence;
 
 	public SequenceCondition(int sequence) {
