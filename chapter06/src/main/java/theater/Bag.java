@@ -9,8 +9,16 @@ public class Bag {
 		return invitation != null;
 	}
 
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
+	public Long setTicket(Ticket ticket) {
+		if (hasInvitation()) {
+			this.ticket = ticket;
+			return 0L;
+		}
+		else {
+			this.ticket = ticket;
+			minusAmount(ticket.getFee());
+			return ticket.getFee();
+		}
 	}
 
 	public void minusAmount(Long amount) {
