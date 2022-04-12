@@ -20,7 +20,7 @@ public class NightlyDiscountPhone extends Phone {
 		Money nightlyFee = Money.ZERO;
 		for (Call call : getCalls()) {
 			if (call.getFrom().getHour() >= LATE_NIGHT_HOUR) {
-				nightlyFee = result.plus(getAmount().minus(nightlyAmount).times((double) call.getDuration().getSeconds() / getSeconds().getSeconds()));
+				nightlyFee = nightlyFee.plus(getAmount().minus(nightlyAmount).times((double) call.getDuration().getSeconds() / getSeconds().getSeconds()));
 			}
 		}
 		return result.minus(nightlyFee);
