@@ -9,11 +9,13 @@ import money.Money;
 public class Phone {
 	private Money amount;
 	private Duration seconds;
+	private double taxRate;
 	private List<Call> calls = new ArrayList<>();
 
-	public Phone(Money amount, Duration seconds) {
+	public Phone(Money amount, Duration seconds, double taxRate) {
 		this.amount = amount;
 		this.seconds = seconds;
+		this.taxRate = taxRate;
 	}
 
 	public void call(Call call) {
@@ -37,6 +39,6 @@ public class Phone {
 		for (Call call : calls) {
 			result = result.plus(amount.times((double) call.getDuration().getSeconds() / seconds.getSeconds()));
 		}
-		return result;
+		return result.plus(result.times(taxRate));
 	}
 }
