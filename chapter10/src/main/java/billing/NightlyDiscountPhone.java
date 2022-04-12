@@ -1,28 +1,38 @@
 package billing;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import money.Money;
 
-public class NightlyDiscountPhone extends Phone {
+public class NightlyDiscountPhone {
 	private static final int LATE_NIGHT_HOUR = 22;
 	private Money nightlyAmount;
+	private Money regularAmount;
+	private Duration seconds;
+	private List<Call> calls = new ArrayList<>();
 
-	public NightlyDiscountPhone(Money nightlyAmount, Money regularAmount, Duration seconds, double taxRate) {
-		super(regularAmount, seconds, taxRate);
+	public NightlyDiscountPhone(Money nightlyAmount, Money regularAmount, Duration seconds) {
 		this.nightlyAmount = nightlyAmount;
+		this.regularAmount = regularAmount;
+		this.seconds = seconds;
 	}
 
-	@Override
 	public Money calculateFee() {
-		// 부모 클래스의 calculateFee 호출
-		Money result = super.calculateFee();
-		Money nightlyFee = Money.ZERO;
-		for (Call call : getCalls()) {
-			if (call.getFrom().getHour() >= LATE_NIGHT_HOUR) {
-				nightlyFee = nightlyFee.plus(getAmount().minus(nightlyAmount).times((double) call.getDuration().getSeconds() / getSeconds().getSeconds()));
-			}
+		Money result = Money.ZERO;
+		for (Call call : calls) {
+			result = result.plus(calculateCallFee(call));
 		}
-		return result.minus(nightlyFee.plus(nightlyFee.times(getTaxRate())));
+		return result;
+	}
+
+	private Money calculateCallFee(Call call) {
+		if (call.getFrom().getHour() >= LATE_NIGHT_HOUR) {
+			return nightlyAmount.times((double) call.getDuration().getSeconds() / seconds.getSeconds());
+		}
+		else {
+			return regularAmount.times((double) call.getDuration().getSeconds() / seconds.getSeconds());
+		}
 	}
 }
