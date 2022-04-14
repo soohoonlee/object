@@ -8,11 +8,11 @@ public class Money {
 
 	private final BigDecimal amount;
 
-	private static Money wons(long amount) {
+	public static Money wons(long amount) {
 		return new Money(BigDecimal.valueOf(amount));
 	}
 
-	private static Money wons(double amount) {
+	public static Money wons(double amount) {
 		return new Money(BigDecimal.valueOf(amount));
 	}
 
