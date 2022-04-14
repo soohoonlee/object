@@ -31,4 +31,20 @@ public class GradeLecture extends Lecture {
 				.filter(grade::include)
 				.count();
 	}
+
+	public double average(String gradeName) {
+		return grades.stream()
+				.filter(grade -> grade.isName(gradeName))
+				.findFirst()
+				.map(this::gradeAverage)
+				.orElse(0.0);
+	}
+
+	public double gradeAverage(Grade grade) {
+		return getScores().stream()
+				.filter(grade::include)
+				.mapToInt(Integer::intValue)
+				.average()
+				.orElse(0);
+	}
 }
