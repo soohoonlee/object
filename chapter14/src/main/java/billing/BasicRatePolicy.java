@@ -1,17 +1,30 @@
 package billing;
 
+import java.util.Arrays;
+import java.util.List;
+
 import money.Money;
 
-public abstract class BasicRatePolicy implements RatePolicy {
-	@Override
-	public Money calculateFee(Phone phone) {
-		Money result = Money.ZERO;
+public class BasicRatePolicy implements RatePolicy {
+	private List<FeeRule> feeRules;
 
-		for (Call call : phone.getCalls()) {
-			result = result.plus(calculateCallFee(call));
-		}
-		return result;
+	public BasicRatePolicy(FeeRule... feeRules) {
+		this.feeRules = Arrays.asList(feeRules);
 	}
 
-	protected abstract Money calculateCallFee(Call call);
+	@Override
+	public Money calculateFee(Phone phone) {
+		return phone.getCalls()
+				.stream()
+				.map(this::calculate)
+				.reduce(Money.ZERO, Money::plus);
+	}
+
+	private Money calculate(Call call) {
+		return feeRules
+				.stream()
+				.map(rule -> rule.calculateFee(call))
+				.reduce(Money.ZERO, Money::plus);
+	}
+
 }
