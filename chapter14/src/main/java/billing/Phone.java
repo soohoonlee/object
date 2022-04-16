@@ -14,6 +14,10 @@ public class Phone {
 		this.ratePolicy = ratePolicy;
 	}
 
+	public void call(Call call) {
+		calls.add(call);
+	}
+
 	public List<Call> getCalls() {
 		return Collections.unmodifiableList(calls);
 	}
